@@ -8,15 +8,32 @@
     @csrf
     @method('PUT')
 
+     @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <label for="name" class="form-label">Name: </label>
     <input 
         id="name" 
         type="text" 
         name="name" 
         value="{{ old('name', $course->name) }}" 
-        class="form-control mb-3" 
-        required
+        class="form-control @error('name') is-invalid @enderror mb-3" 
+        
     >
+
+     @error('name')
+        <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+
 
     <label for="description" class="form-label">Description: </label>
     <input 
@@ -24,9 +41,16 @@
         type="text" 
         name="description" 
         value="{{ old('description', $course->description) }}" 
-        class="form-control mb-3" 
-        required
+        class="form-control @error('description') is-invalid @enderror mb-3" 
+        
     >
+
+     @error('description')
+        <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+
 
     <button type="submit" class="btn btn-primary">Update Course</button>
     <a href="{{ route('courses.index') }}" class="btn btn-secondary">Cancel</a>
